@@ -4,7 +4,7 @@ import {useRTMClient} from "./useRTMClient";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import {AgoraContext} from "../context/AgoraContext";
 
-export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy, mode}) => {
+export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy, mode, rtmToken}) => {
 
     const [loading, setLoading] = useState(true);
     const [localUserId, setLocalUserId] = useState(null);
@@ -21,14 +21,14 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             const uid = await rtcClient.join(appId, channel, token, userId);
             setLocalUserId(uid);
             rtcClient.enableAudioVolumeIndicator();
-            await rtmClient.login({token, uid: `${uid}`});
+            await rtmClient.login({rtmToken, uid: `${uid}`});
             const rtmChannel = rtmClient.createChannel(channel);
             setRTMChannel(rtmChannel);
             await rtmChannel.join();
         } catch (error) {
             console.log(error);
         }
-    }, [rtcClient, rtmClient, appId, channel, token, userId, isHost, setLocalUserId, setRTMChannel]);
+    }, [rtcClient, rtmClient, appId, channel, token, userId, isHost, setLocalUserId, setRTMChannel, rtmToken]);
 
     const publishTracks = useCallback(async () => {
         try {
