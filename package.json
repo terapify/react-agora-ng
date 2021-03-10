@@ -26,7 +26,8 @@
   "author": "Agnostech Innovations LLP",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "postinstall": "yarn build"
   },
   "peerDependencies": {
     "agora-rtc-sdk-ng": "^4.0.1",
