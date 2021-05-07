@@ -48,7 +48,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
 
         try {
             const videoTrack = await AgoraRTC.createCameraVideoTrack({
-                encoderConfig: '480p_3',
+                encoderConfig: '480p_1',
                 facingMode: 'user'
             });
             videoTrack.play(localVideoDiv);
