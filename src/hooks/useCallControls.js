@@ -87,11 +87,9 @@ export const useCallControls = () => {
 
 
     const startScreenShare = useCallback(async ({channel, token}) => {
-        console.log('ESOMEROLAS')
-        const shareClient = AgoraRTC.createClient({mode: "rtc", codec: "vp8"});
+        const shareClient = AgoraRTC.createClient({mode: "rtc", codec: "h264"});
         if (!screenShareClient) {
             try {
-                console.log('DESPUES', shareClient)
                 await shareClient.join(appId, channel, token);
 
                 const screenTrack = await AgoraRTC.createScreenVideoTrack({
@@ -102,11 +100,8 @@ export const useCallControls = () => {
                 });
                 await shareClient.publish(screenTrack);
                 setScreenShareClient(shareClient);
-                console.log('Client', shareClient)
-
             } catch (error) {
                 try {
-                    console.log('LOCAL', shareClient)
                     if (shareClient) {
                         const videoTrack = shareClient.localTracks;
                         if (videoTrack.length > 0) {
@@ -114,7 +109,6 @@ export const useCallControls = () => {
                             videoTrack[0].close();
                         }
                         await shareClient.leave();
-                        console.log('FINAL')
                         return error
                     }
                 } catch (error) {
