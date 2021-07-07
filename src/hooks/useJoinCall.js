@@ -44,6 +44,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
         } catch (error) {
             //TODO: Report error when audio permissions are denied
             console.log(error);
+            return error
         }
 
         try {
@@ -63,6 +64,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
         } catch (error) {
             //TODO: Report error when video permissions are denied
             console.log(error);
+            return error
         }
     }, [isHost, rtcClient, localVideoDiv, setLocalVideoDiv]);
 
