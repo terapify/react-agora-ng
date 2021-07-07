@@ -24,6 +24,7 @@ export const useCallControls = () => {
                 await client.publish(video);
             } catch (error) {
                 console.log(error);
+                return error
             }
             return;
         }
@@ -35,6 +36,7 @@ export const useCallControls = () => {
                 await client.unpublish(video);
             } catch (error) {
                 console.log(error);
+                return error
             }
         }
     }, [client, localVideoDiv])
