@@ -78,7 +78,8 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
                 publishTracks()
             })
             .then(() => setLoading(false))
-            .catch(error => {
+            .catch((err) => {
+                console.log('ese error 2', err, error)
                 setLoading(false);
                 setError(error)
                 return error
@@ -90,7 +91,8 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             joinCall()
                 .then(() => publishTracks())
                 .then(() => setLoading(false))
-                .catch(error => {
+                .catch((err) => {
+                    console.log('ESE ERROR', err, error)
                     setLoading(false);
                     setError(error)
                     return error
