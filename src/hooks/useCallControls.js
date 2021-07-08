@@ -49,6 +49,7 @@ export const useCallControls = () => {
                 await client.publish(audio);
             } catch (error) {
                 console.log(error);
+                return error
             }
             return;
         }
@@ -60,6 +61,7 @@ export const useCallControls = () => {
             await client.unpublish(audio);
         } catch (error) {
             console.log(error);
+            return error
         }
     }, [client]);
 
