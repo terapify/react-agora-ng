@@ -27,6 +27,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             await rtmChannel.join();
         } catch (error) {
             console.log(error);
+            return error
         }
     }, [rtcClient, rtmClient, appId, channel, token, userId, isHost, setLocalUserId, setRTMChannel, rtmToken]);
 
