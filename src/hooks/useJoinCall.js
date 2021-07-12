@@ -84,7 +84,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             .catch((err) => {
                 setLoading(false);
                 setError(error)
-                return {error, device}
+                return {error:error, device:device}
             });
     }, [joinCall, publishTracks, setLoading, setError]);
 
@@ -96,7 +96,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
                 .catch((err) => {
                     setLoading(false);
                     setError(error)
-                    return {error, device}
+                    return {error:error, device:device}
                 });
         }
 
