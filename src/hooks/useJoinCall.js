@@ -10,6 +10,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
     const [localUserId, setLocalUserId] = useState(null);
     const [error, setError] = useState(null);
     const [retry, setRetry] = useState(false);
+    const [device, setDevice] = useState([])
     const rtcClient = useAgoraClient();
     const {appId, setRTMChannel, setLocalVideoDiv, rtmClient} = useContext(AgoraContext);
 
@@ -45,6 +46,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
         } catch (error) {
             //TODO: Report error when audio permissions are denied
             console.log(error);
+            setDevice([...device, 'audio'])
             setError(error)
             // return error
         }
@@ -66,6 +68,7 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
         } catch (error) {
             //TODO: Report error when video permissions are denied
             console.log(error);
+            setDevice([...device, 'video'])
             setError(error)
             // return error
         }
@@ -79,10 +82,9 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             })
             .then(() => setLoading(false))
             .catch((err) => {
-                console.log('ese error 2', err, error)
                 setLoading(false);
                 setError(error)
-                return error
+                return (error, device)
             });
     }, [joinCall, publishTracks, setLoading, setError]);
 
@@ -92,10 +94,9 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
                 .then(() => publishTracks())
                 .then(() => setLoading(false))
                 .catch((err) => {
-                    console.log('ESE ERROR', err, error)
                     setLoading(false);
                     setError(error)
-                    return error
+                    return (error, device)
                 });
         }
 
