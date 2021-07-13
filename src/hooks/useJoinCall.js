@@ -8,7 +8,8 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
 
     const [loading, setLoading] = useState(true);
     const [localUserId, setLocalUserId] = useState(null);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState({audio: null, video: null});
+    const [device, setDevice] = useState({})
     const [retry, setRetry] = useState(false);
     const rtcClient = useAgoraClient();
     const {appId, setRTMChannel, setLocalVideoDiv, rtmClient} = useContext(AgoraContext);
@@ -26,12 +27,14 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             setRTMChannel(rtmChannel);
             await rtmChannel.join();
         } catch (error) {
-            console.log(error);
+            console.log('errorr join', error);
             return error
         }
     }, [rtcClient, rtmClient, appId, channel, token, userId, isHost, setLocalUserId, setRTMChannel, rtmToken]);
 
     const publishTracks = useCallback(async () => {
+        let audioError = {}
+        let videoError = {}
         try {
             if (mode === 'live') {
                 if (isHost) {
@@ -44,10 +47,9 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             }
         } catch (error) {
             //TODO: Report error when audio permissions are denied
-            console.log(error);
-            const customError = [...error]
-            customError.device = "audio"
-            setError(customError)
+            console.log('errorr publish audio', error);
+            audioError = error
+            // setError(error)
             // return error
         }
 
@@ -67,12 +69,15 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             }
         } catch (error) {
             //TODO: Report error when video permissions are denied
-            console.log(error);
-            const customError = [...error]
-            customError.device = "video"
-            setError(customError)
+            console.log('errorr publish video', error);
+            videoError = error
+            // setError(error)
             // return error
         }
+        setError({
+            audio: audioError,
+            video: videoError
+        })
     }, [isHost, rtcClient, localVideoDiv, setLocalVideoDiv]);
 
     const startCallAndStream = useCallback(() => {
@@ -83,9 +88,9 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
             })
             .then(() => setLoading(false))
             .catch((err) => {
-                console.log('ese error 2', err, error)
+                console.log('errorr call and stream', err, error)
                 setLoading(false);
-                setError(error)
+                // setError(error)
                 return error
             });
     }, [joinCall, publishTracks, setLoading, setError]);
@@ -96,9 +101,9 @@ export const useJoinCall = ({channel, token, userId, localVideoDiv, isHost, lazy
                 .then(() => publishTracks())
                 .then(() => setLoading(false))
                 .catch((err) => {
-                    console.log('ESE ERROR', err, error)
+                    console.log('errorr useEffect', err, error)
                     setLoading(false);
-                    setError(error)
+                    // setError(error)
                     return error
                 });
         }
